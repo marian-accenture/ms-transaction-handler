@@ -3,7 +3,6 @@ package com.bank.ingestion.domain.port.outbound;
 import com.bank.ingestion.domain.model.Transaction;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface TransactionRepository {
 

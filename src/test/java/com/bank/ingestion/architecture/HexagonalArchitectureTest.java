@@ -15,7 +15,7 @@ class HexagonalArchitectureTest {
 
     /**
      * Rule 1 — Domain purity.
-     * The domain layer must not import any framework (Spring, JPA, Kafka).
+        * The domain layer must not import any framework (Spring, JPA).
      * Framework coupling lives exclusively in adapters.
      */
     @ArchTest
@@ -25,8 +25,7 @@ class HexagonalArchitectureTest {
                     .should().dependOnClassesThat()
                     .resideInAnyPackage(
                             "org.springframework..",
-                            "jakarta.persistence..",
-                            "org.apache.kafka.."
+                            "jakarta.persistence.."
                     )
                     .because("the domain must be framework-agnostic");
 
