@@ -1,0 +1,16 @@
+# Overrides for test profile — Testcontainers provides real datasource/Kafka/MongoDB.
+# Use @ServiceConnection on container declarations or @DynamicPropertySource to inject URLs.
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  flyway:
+    enabled: true
+
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: never
