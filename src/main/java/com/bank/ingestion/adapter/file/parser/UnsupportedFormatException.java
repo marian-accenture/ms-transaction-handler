@@ -7,4 +7,8 @@ public class UnsupportedFormatException extends RuntimeException {
     public UnsupportedFormatException(FileFormat format) {
         super("Unsupported file format: " + format);
     }
+
+    public UnsupportedFormatException(String fileName) {
+        super("Unsupported file format for file: " + fileName);
+    }
 }
