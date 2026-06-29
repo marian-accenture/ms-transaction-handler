@@ -4,12 +4,15 @@ import com.bank.ingestion.application.dto.FileIngestionResult;
 import com.bank.ingestion.application.dto.ParsedRow;
 import com.bank.ingestion.application.dto.RowProcessingResult;
 import com.bank.ingestion.application.usecase.FileIngestionUseCaseImpl;
+import com.bank.ingestion.domain.model.FileFormat;
 import com.bank.ingestion.domain.model.FileStatus;
+import com.bank.ingestion.domain.model.IngestionSummary;
 import com.bank.ingestion.domain.port.outbound.FileParserResolver;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -95,6 +98,30 @@ class ApplicationLayerTest {
             }
         };
         assertThat(new FileIngestionUseCaseImpl(fileParserResolver)).isNotNull();
+    }
+
+    @Test
+    void ingestValidatesParserSupportAndReturnsProcessingSummary() {
+        AtomicReference<Path> capturedPath = new AtomicReference<>();
+        FileParserResolver fileParserResolver = new FileParserResolver() {
+            @Override
+            public void ensureSupported(Path filePath) {
+                capturedPath.set(filePath);
+            }
+        };
+
+        FileIngestionUseCaseImpl useCase = new FileIngestionUseCaseImpl(fileParserResolver);
+        UUID fileId = UUID.randomUUID();
+        Path filePath = Path.of("sample.json");
+
+        IngestionSummary summary = useCase.ingest(fileId, filePath, "sample.json", FileFormat.JSON, "tester");
+
+        assertThat(capturedPath.get()).isEqualTo(filePath);
+        assertThat(summary.getFileId()).isEqualTo(fileId);
+        assertThat(summary.getStatus()).isEqualTo(FileStatus.PROCESSING);
+        assertThat(summary.getTotalRows()).isZero();
+        assertThat(summary.getSuccessRows()).isZero();
+        assertThat(summary.getFailedRows()).isZero();
     }
 }
 
