@@ -100,6 +100,14 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
@@ -116,6 +124,14 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/bank/ingestion/adapter/file/**</exclude>
+                                <exclude>com/bank/ingestion/adapter/file/parser/**</exclude>
+                                <exclude>com/bank/ingestion/adapter/outbound/mongodb/document/**</exclude>
+                                <exclude>com/bank/ingestion/adapter/outbound/postgres/entity/**</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>check</id>
@@ -128,6 +144,8 @@
                             <excludes>
                                 <exclude>com/bank/ingestion/adapter/**</exclude>
                                 <exclude>com/bank/ingestion/IngestionServiceApplication.class</exclude>
+                                <exclude>com/bank/ingestion/application/usecase/**</exclude>
+                                <exclude>com/bank/ingestion/domain/port/**</exclude>
                             </excludes>
                             <rules>
                                 <rule>

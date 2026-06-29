@@ -5,8 +5,10 @@ import com.bank.ingestion.application.dto.ParsedRow;
 import com.bank.ingestion.application.dto.RowProcessingResult;
 import com.bank.ingestion.application.usecase.FileIngestionUseCaseImpl;
 import com.bank.ingestion.domain.model.FileStatus;
+import com.bank.ingestion.domain.port.outbound.FileParserResolver;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -86,7 +88,13 @@ class ApplicationLayerTest {
 
     @Test
     void fileIngestionUseCaseImplCanBeInstantiated() {
-        assertThat(new FileIngestionUseCaseImpl()).isNotNull();
+        FileParserResolver fileParserResolver = new FileParserResolver() {
+            @Override
+            public void ensureSupported(Path filePath) {
+                // no-op for constructor test
+            }
+        };
+        assertThat(new FileIngestionUseCaseImpl(fileParserResolver)).isNotNull();
     }
 }
 
