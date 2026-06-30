@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
 
-@Document(collection = "file_audits")
+@Document(collection = "file_uploads")
 public class FileAuditDocument {
 
     @Id

@@ -1,6 +1,10 @@
 # Overrides for test profile — Testcontainers provides real datasource/MongoDB.
 # Use @ServiceConnection on container declarations or @DynamicPropertySource to inject URLs.
 spring:
+  mongodb:
+    embedded:
+      version: 7.0.14
+
   jpa:
     hibernate:
       ddl-auto: validate
