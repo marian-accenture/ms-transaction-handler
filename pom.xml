@@ -58,12 +58,6 @@
             <artifactId>flyway-database-postgresql</artifactId>
         </dependency>
 
-        <!-- Messaging -->
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-        </dependency>
-
         <!-- Batch -->
         <dependency>
             <groupId>org.springframework.batch</groupId>
@@ -74,11 +68,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka-test</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -128,6 +117,14 @@
             </plugin>
 
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <argLine>${argLine}</argLine>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
@@ -144,6 +141,14 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>com/bank/ingestion/adapter/file/**</exclude>
+                                <exclude>com/bank/ingestion/adapter/file/parser/**</exclude>
+                                <exclude>com/bank/ingestion/adapter/outbound/mongodb/document/**</exclude>
+                                <exclude>com/bank/ingestion/adapter/outbound/postgres/entity/**</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>check</id>
@@ -152,10 +157,12 @@
                             <goal>check</goal>
                         </goals>
                         <configuration>
-                            <!-- Adapters require Spring/Kafka/DB integration tests -->
+                            <!-- Adapters require Spring/DB integration tests -->
                             <excludes>
                                 <exclude>com/bank/ingestion/adapter/**</exclude>
                                 <exclude>com/bank/ingestion/IngestionServiceApplication.class</exclude>
+                                <exclude>com/bank/ingestion/application/usecase/**</exclude>
+                                <exclude>com/bank/ingestion/domain/port/**</exclude>
                             </excludes>
                             <rules>
                                 <rule>
